@@ -224,6 +224,12 @@ class DetectionPredictor(BasePredictor):
         oids = []
         outputs = []
         for *xyxy, conf, cls in reversed(det):
+            #Add Object Blurring Code
+            #..................................................................
+            crop_obj = im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])]
+            blur = cv2.blur(crop_obj,(20,20))
+            im0[int(xyxy[1]):int(xyxy[3]),int(xyxy[0]):int(xyxy[2])] = blur
+            #..................................................................
             x_c, y_c, bbox_w, bbox_h = xyxy_to_xywh(*xyxy)
             xywh_obj = [x_c, y_c, bbox_w, bbox_h]
             xywh_bboxs.append(xywh_obj)
